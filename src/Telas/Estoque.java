@@ -3,10 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Telas;
 
+import Negocio.Produto;
 import dao.ProdutoDAO;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -18,16 +20,62 @@ public class Estoque extends javax.swing.JInternalFrame {
     /**
      * Creates new form Estoque
      */
-    
-    ProdutoDAO produto = new ProdutoDAO();
+    ProdutoDAO produtoDAO = new ProdutoDAO();
 
-    public void popularTabela(){
-        DefaultTableModel dtm = (DefaultTableModel) tblProdutos.getModel();
-        
+    public void habilitarComponentes() {
+        txtNomeProduto.setEditable(true);
+        txtDescricao.setEditable(true);
+        txtValorCompra.setEditable(true);
+        txtValorVenda.setEditable(true);
+        cxQuantidade.setEnabled(true);
+        txtUnidadeMedida.setEditable(true);
+
+        btSalvar.setEnabled(true);
+        btExcluir.setEnabled(true);
+        btCancelar.setEnabled(true);
     }
     
+    public void desabilitarComponentes(){
+        txtNomeProduto.setEditable(false);
+        txtDescricao.setEditable(false);
+        txtValorCompra.setEditable(false);
+        txtValorVenda.setEditable(false);
+        cxQuantidade.setEnabled(false);
+        txtUnidadeMedida.setEditable(false);
+
+        btSalvar.setEnabled(false);
+        btExcluir.setEnabled(false);
+        btCancelar.setEnabled(false);
+
+        txtCodProduto.setText("");
+        txtNomeProduto.setText("");
+        txtDescricao.setText("");
+        txtValorCompra.setText("");
+        txtValorVenda.setText("");
+        txtUnidadeMedida.setText("");
+        cxQuantidade.setValue(0);
+    }
+
+    public void popularTabela() {
+        DefaultTableModel dtm = (DefaultTableModel) tblProdutos.getModel();
+        dtm.setNumRows(0);
+        ArrayList<Produto> produtos = produtoDAO.listar();
+
+        for (int i = 0; i < produtos.size(); i++) {
+            dtm.addRow(new Object[]{
+                produtos.get(i).getCodProduto(),
+                produtos.get(i).getNomeProduto(),
+                produtos.get(i).getValorCompra(),
+                produtos.get(i).getValorVenda(),
+                produtos.get(i).getQuantidade()
+            });
+        }
+
+    }
+
     public Estoque() {
         initComponents();
+        popularTabela();
     }
 
     /**
@@ -42,24 +90,25 @@ public class Estoque extends javax.swing.JInternalFrame {
         jLabel1 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        txtCodProduto = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
+        txtNomeProduto = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        txtDescricao = new javax.swing.JTextArea();
         jLabel5 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
+        txtValorCompra = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        jTextField5 = new javax.swing.JTextField();
+        txtValorVenda = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
-        jSpinner1 = new javax.swing.JSpinner();
+        cxQuantidade = new javax.swing.JSpinner();
         jLabel8 = new javax.swing.JLabel();
-        jTextField6 = new javax.swing.JTextField();
+        txtUnidadeMedida = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblProdutos = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btSalvar = new javax.swing.JButton();
+        btExcluir = new javax.swing.JButton();
+        btCancelar = new javax.swing.JButton();
 
         setClosable(true);
         setIconifiable(true);
@@ -72,36 +121,49 @@ public class Estoque extends javax.swing.JInternalFrame {
 
         jLabel2.setText("Código:");
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 50, -1, -1));
-        getContentPane().add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 50, 60, -1));
+
+        txtCodProduto.setEditable(false);
+        getContentPane().add(txtCodProduto, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 50, 60, -1));
 
         jLabel3.setText("Nome:");
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 50, -1, -1));
-        getContentPane().add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 50, 300, -1));
+
+        txtNomeProduto.setEditable(false);
+        getContentPane().add(txtNomeProduto, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 50, 300, -1));
 
         jLabel4.setText("Descrição:");
         getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 90, -1, -1));
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        txtDescricao.setEditable(false);
+        txtDescricao.setColumns(20);
+        txtDescricao.setRows(5);
+        jScrollPane1.setViewportView(txtDescricao);
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 90, 260, -1));
 
         jLabel5.setText("Preço de compra:");
         getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 90, -1, -1));
-        getContentPane().add(jTextField4, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 110, 120, -1));
+
+        txtValorCompra.setEditable(false);
+        getContentPane().add(txtValorCompra, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 110, 120, -1));
 
         jLabel6.setText("Preço de venda:");
         getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 150, -1, -1));
-        getContentPane().add(jTextField5, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 170, 120, -1));
+
+        txtValorVenda.setEditable(false);
+        getContentPane().add(txtValorVenda, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 170, 120, -1));
 
         jLabel7.setText("Quantidade:");
         getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 210, -1, -1));
-        getContentPane().add(jSpinner1, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 210, 60, -1));
+
+        cxQuantidade.setEnabled(false);
+        getContentPane().add(cxQuantidade, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 210, 60, -1));
 
         jLabel8.setText("Unidade de medida:");
         getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 210, -1, -1));
-        getContentPane().add(jTextField6, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 210, 90, -1));
+
+        txtUnidadeMedida.setEditable(false);
+        getContentPane().add(txtUnidadeMedida, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 210, 90, -1));
 
         tblProdutos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -122,6 +184,11 @@ public class Estoque extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
+        tblProdutos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblProdutosMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(tblProdutos);
         if (tblProdutos.getColumnModel().getColumnCount() > 0) {
             tblProdutos.getColumnModel().getColumn(0).setMinWidth(50);
@@ -140,19 +207,71 @@ public class Estoque extends javax.swing.JInternalFrame {
 
         getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 290, 600, 230));
 
-        jButton1.setText("Salvar");
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 240, -1, -1));
+        btSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icones/salvar.png"))); // NOI18N
+        btSalvar.setText("Salvar");
+        btSalvar.setEnabled(false);
+        getContentPane().add(btSalvar, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 240, -1, -1));
 
-        jButton2.setText("Excluir");
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 240, -1, -1));
+        btExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icones/excluir.png"))); // NOI18N
+        btExcluir.setText("Excluir");
+        btExcluir.setEnabled(false);
+        btExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btExcluirActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btExcluir, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 240, -1, -1));
+
+        btCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icones/cancelar.png"))); // NOI18N
+        btCancelar.setText("Cancelar");
+        btCancelar.setEnabled(false);
+        btCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btCancelarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 240, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void tblProdutosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblProdutosMouseClicked
+        if (evt.getClickCount() == 2) {
+            DefaultTableModel dtm = (DefaultTableModel) tblProdutos.getModel();
+            int linha = tblProdutos.getSelectedRow();
+            Produto produto = produtoDAO.recuperarPorCodigo((int) tblProdutos.getValueAt(linha, 0));
+            txtCodProduto.setText(String.valueOf(produto.getCodProduto()));
+            txtNomeProduto.setText(produto.getNomeProduto());
+            txtDescricao.setText(produto.getDescricacao());
+            txtValorCompra.setText(String.valueOf(produto.getValorCompra()));
+            txtValorVenda.setText(String.valueOf(produto.getValorVenda()));
+            cxQuantidade.setValue(produto.getQuantidade());
+            txtUnidadeMedida.setText(produto.getUnidadeMedida());
+
+            //habilitando componentes
+            habilitarComponentes();
+        }
+    }//GEN-LAST:event_tblProdutosMouseClicked
+
+    private void btCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCancelarActionPerformed
+        desabilitarComponentes();
+    }//GEN-LAST:event_btCancelarActionPerformed
+
+    private void btExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btExcluirActionPerformed
+        int opcao = JOptionPane.showConfirmDialog(this, "Deseja realmente excluir o produto " + txtNomeProduto.getText() + "?");
+        if (opcao == 0) {
+            produtoDAO.excluir(Integer.parseInt(txtCodProduto.getText()));
+        }
+        desabilitarComponentes();
+        popularTabela();
+    }//GEN-LAST:event_btExcluirActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton btCancelar;
+    private javax.swing.JButton btExcluir;
+    private javax.swing.JButton btSalvar;
+    private javax.swing.JSpinner cxQuantidade;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -163,14 +282,13 @@ public class Estoque extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JSpinner jSpinner1;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
     private javax.swing.JTable tblProdutos;
+    private javax.swing.JTextField txtCodProduto;
+    private javax.swing.JTextArea txtDescricao;
+    private javax.swing.JTextField txtNomeProduto;
+    private javax.swing.JTextField txtUnidadeMedida;
+    private javax.swing.JTextField txtValorCompra;
+    private javax.swing.JTextField txtValorVenda;
     // End of variables declaration//GEN-END:variables
 }

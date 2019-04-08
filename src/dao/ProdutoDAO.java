@@ -12,10 +12,10 @@ import java.util.ArrayList;
  * @author JOÃO VITOR
  */
 public class ProdutoDAO {
-    
+
     Connection conexao = new Conexao().getConnection();
-    
-    public void inserir(Produto produto) throws ClassNotFoundException, SQLException{
+
+    public void inserir(Produto produto) throws ClassNotFoundException, SQLException {
         String sql = "INSERT INTO produtos (nomeProduto, descricao, quantidade, valorCompra, valorVenda, unidadeMedida)"
                 + "VALUES(?,?,?,?,?,?)";
         PreparedStatement pst = conexao.prepareStatement(sql);
@@ -25,35 +25,87 @@ public class ProdutoDAO {
         pst.setDouble(4, produto.getValorCompra());
         pst.setDouble(5, produto.getValorVenda());
         pst.setString(6, produto.getUnidadeMedida());
-        
+
         pst.execute();
         pst.close();
         conexao.close();
     }
-    
-    public ArrayList<Produto> listar() throws SQLException{
-        
+
+    public ArrayList<Produto> listar() {
+
+        Connection conexao = new Conexao().getConnection();
         String sql = "SELECT * FROM produtos";
-        PreparedStatement pst = conexao.prepareStatement(sql);
-        ResultSet rs = pst.executeQuery();
-        
         ArrayList<Produto> produtos = new ArrayList<>();
-        
-        while(rs.next()){
-            Produto produto = new Produto();
-            produto.setCodProduto(rs.getInt("codProduto"));
-            produto.setNomeProduto(rs.getString("nomeProduto"));
-            produto.setDescricacao(rs.getString("descricao"));
-            produto.setQuantidade(rs.getInt("quantidade"));
-            produto.setValorCompra(rs.getDouble("valorCompra"));
-            produto.setValorVenda(rs.getDouble("valorVenda"));
-            produto.setUnidadeMedida(rs.getString("unidadeMedida"));
-            produtos.add(produto);
+        try {
+            PreparedStatement pst = conexao.prepareStatement(sql);
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+                Produto produto = new Produto();
+                produto.setCodProduto(rs.getInt("codProduto"));
+                produto.setNomeProduto(rs.getString("nomeProduto"));
+                produto.setDescricacao(rs.getString("descricao"));
+                produto.setQuantidade(rs.getInt("quantidade"));
+                produto.setValorCompra(rs.getDouble("valorCompra"));
+                produto.setValorVenda(rs.getDouble("valorVenda"));
+                produto.setUnidadeMedida(rs.getString("unidadeMedida"));
+                produtos.add(produto);
+            }
+            pst.close();
+            rs.close();
+            conexao.close();
+
+        } catch (SQLException ex) {
+            System.out.println(ex);
         }
-        //pst.close();
-        //rs.close();
-        //conexao.close();
+
         return produtos;
-    } 
+    }
+
+    public Produto recuperarPorCodigo(int codigo) {
+        Connection conexao = new Conexao().getConnection();
+        String sql = "SELECT * FROM produtos WHERE codProduto = ?";
+        Produto produto = new Produto();
+        try {
+            PreparedStatement pst = conexao.prepareStatement(sql);
+            pst.setInt(1, codigo);
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next()) {
+                produto.setCodProduto(rs.getInt("codProduto"));
+                produto.setNomeProduto(rs.getString("nomeProduto"));
+                produto.setDescricacao(rs.getString("descricao"));
+                produto.setQuantidade(rs.getInt("quantidade"));
+                produto.setValorCompra(rs.getDouble("valorCompra"));
+                produto.setValorVenda(rs.getDouble("valorVenda"));
+                produto.setUnidadeMedida(rs.getString("unidadeMedida"));
+            }
+            pst.close();
+            rs.close();
+            conexao.close();
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+        return produto;
+    }
     
+    public void excluir(int codigo){
+        Connection conexao = new Conexao().getConnection();
+        String sql = "DELETE FROM produtos WHERE codProduto = ?";
+        
+        try {
+            PreparedStatement pst = conexao.prepareStatement(sql);
+            pst.setInt(1, codigo);
+            pst.execute();
+            pst.close();
+            conexao.close();
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+    }
+    
+    public void editar(){
+        
+    }
+
 }
