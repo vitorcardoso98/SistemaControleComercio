@@ -7,7 +7,7 @@ package Telas;
 
 import Negocio.Produto;
 import dao.ProdutoDAO;
-import java.sql.SQLException;
+
 
 /**
  *
@@ -163,7 +163,7 @@ public class CadastrarProduto extends javax.swing.JInternalFrame {
         produto.setQuantidade((int) cxQuantidade.getValue());
         produto.setUnidadeMedida(txtUnidadeMedida.getText());
         ProdutoDAO prodDAO = new ProdutoDAO();
-        try {
+        
             prodDAO.inserir(produto);
             txtNome.setText("");
             txtDescricao.setText("");
@@ -171,11 +171,8 @@ public class CadastrarProduto extends javax.swing.JInternalFrame {
             txtValorVenda.setText("");
             txtUnidadeMedida.setText("");
             cxQuantidade.setValue(0);
-        } catch (SQLException e) {
-            System.out.println(e);
-        } catch (ClassNotFoundException ex) {
-            System.out.println(ex);
-        }
+        
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jButton1KeyPressed

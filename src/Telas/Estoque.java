@@ -210,6 +210,11 @@ public class Estoque extends javax.swing.JInternalFrame {
         btSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icones/salvar.png"))); // NOI18N
         btSalvar.setText("Salvar");
         btSalvar.setEnabled(false);
+        btSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btSalvarActionPerformed(evt);
+            }
+        });
         getContentPane().add(btSalvar, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 240, -1, -1));
 
         btExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icones/excluir.png"))); // NOI18N
@@ -265,6 +270,21 @@ public class Estoque extends javax.swing.JInternalFrame {
         desabilitarComponentes();
         popularTabela();
     }//GEN-LAST:event_btExcluirActionPerformed
+
+    private void btSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSalvarActionPerformed
+        Produto produto = new Produto();
+        produto.setCodProduto(Integer.parseInt(txtCodProduto.getText()));
+        produto.setNomeProduto(txtNomeProduto.getText());
+        produto.setDescricacao(txtDescricao.getText());
+        produto.setValorCompra(Double.parseDouble(txtValorCompra.getText()));
+        produto.setValorVenda(Double.parseDouble(txtValorVenda.getText()));
+        produto.setQuantidade((int) cxQuantidade.getValue());
+        produto.setUnidadeMedida(txtUnidadeMedida.getText());
+        produtoDAO.editar(produto);
+        
+        desabilitarComponentes();
+        popularTabela();
+    }//GEN-LAST:event_btSalvarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -13,22 +13,26 @@ import java.util.ArrayList;
  */
 public class ProdutoDAO {
 
-    Connection conexao = new Conexao().getConnection();
-
-    public void inserir(Produto produto) throws ClassNotFoundException, SQLException {
+    public void inserir(Produto produto){
+        Connection conexao = new Conexao().getConnection();
         String sql = "INSERT INTO produtos (nomeProduto, descricao, quantidade, valorCompra, valorVenda, unidadeMedida)"
                 + "VALUES(?,?,?,?,?,?)";
-        PreparedStatement pst = conexao.prepareStatement(sql);
-        pst.setString(1, produto.getNomeProduto());
-        pst.setString(2, produto.getDescricacao());
-        pst.setInt(3, produto.getQuantidade());
-        pst.setDouble(4, produto.getValorCompra());
-        pst.setDouble(5, produto.getValorVenda());
-        pst.setString(6, produto.getUnidadeMedida());
+        try {
+            PreparedStatement pst = conexao.prepareStatement(sql);
+            pst.setString(1, produto.getNomeProduto());
+            pst.setString(2, produto.getDescricacao());
+            pst.setInt(3, produto.getQuantidade());
+            pst.setDouble(4, produto.getValorCompra());
+            pst.setDouble(5, produto.getValorVenda());
+            pst.setString(6, produto.getUnidadeMedida());
 
-        pst.execute();
-        pst.close();
-        conexao.close();
+            pst.execute();
+            pst.close();
+            conexao.close();
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+
     }
 
     public ArrayList<Produto> listar() {
@@ -88,11 +92,11 @@ public class ProdutoDAO {
         }
         return produto;
     }
-    
-    public void excluir(int codigo){
+
+    public void excluir(int codigo) {
         Connection conexao = new Conexao().getConnection();
         String sql = "DELETE FROM produtos WHERE codProduto = ?";
-        
+
         try {
             PreparedStatement pst = conexao.prepareStatement(sql);
             pst.setInt(1, codigo);
@@ -103,9 +107,51 @@ public class ProdutoDAO {
             System.out.println(ex);
         }
     }
-    
-    public void editar(){
-        
-    }
 
+    public void editar(Produto produto) {
+        Connection conexao = new Conexao().getConnection();
+        String sql = "UPDATE produtos SET nomeProduto=?, descricao=?, quantidade=?, valorCompra=?,"
+                + " valorVenda=?, unidadeMedida=? WHERE codProduto=?";
+        try {
+            PreparedStatement pst = conexao.prepareStatement(sql);
+            pst.setString(1, produto.getNomeProduto());
+            pst.setString(2, produto.getDescricacao());
+            pst.setInt(3, produto.getQuantidade());
+            pst.setDouble(4, produto.getValorCompra());
+            pst.setDouble(5, produto.getValorVenda());
+            pst.setString(6, produto.getUnidadeMedida());
+            pst.setInt(7, produto.getCodProduto());
+            pst.executeLargeUpdate();
+
+            pst.close();
+            conexao.close();
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+
+    }
+    
+    public ArrayList<Produto> pesquisaInteligenteProduto(String texto){
+        Connection conexao = new Conexao().getConnection();
+        String sql = "SELECT * FROM produtos WHERE nomeProduto LIKE ?";
+        ArrayList<Produto> produtos = new ArrayList<>();
+        
+        ResultSet rs = null;
+        try {
+            PreparedStatement pst = conexao.prepareStatement(sql);
+            pst.setString(1, texto + "%");
+            rs = pst.executeQuery();
+            while (rs.next()) {
+                Produto produto = new Produto();
+                produto.setCodProduto(rs.getInt("codProduto"));
+                produto.setNomeProduto(rs.getString("nomeProduto"));
+                
+                produtos.add(produto);
+            }
+            
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+        return produtos;
+    }
 }
