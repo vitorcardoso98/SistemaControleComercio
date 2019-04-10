@@ -1,3 +1,4 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -7,6 +8,7 @@
 package Principal;
 
 import Telas.TelaPrincipal;
+import static java.awt.Frame.MAXIMIZED_BOTH;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -22,6 +24,7 @@ public class Principal {
         lookAndFeel();
         TelaPrincipal tela  = new TelaPrincipal();
         tela.setVisible(true);
+        tela.setExtendedState(MAXIMIZED_BOTH);
     }
 
     private static void lookAndFeel() {

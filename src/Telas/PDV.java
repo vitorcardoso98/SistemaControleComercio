@@ -3,10 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Telas;
 
+import Modelo.ModeloPDV;
 import dao.ProdutoDAO;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -17,9 +18,12 @@ public class PDV extends javax.swing.JInternalFrame {
     /**
      * Creates new form PDV
      */
-    
     ProdutoDAO produtoDAO = new ProdutoDAO();
-    
+    ModeloPDV modeloPDV = new ModeloPDV();
+    float total;
+    float soma;
+    int linha;
+
     public PDV() {
         initComponents();
     }
@@ -52,6 +56,7 @@ public class PDV extends javax.swing.JInternalFrame {
 
         setClosable(true);
         setIconifiable(true);
+        setTitle("PDV");
 
         jPanel3.setBackground(new java.awt.Color(0, 102, 102));
 
@@ -117,21 +122,28 @@ public class PDV extends javax.swing.JInternalFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Código", "Produto", "Quantidade", "Preço"
+                "Código", "Produto", "Quantidade", "Preço", "Total"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, true, false
+                false, false, true, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
+        jTable1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTable1KeyPressed(evt);
             }
         });
         jScrollPane1.setViewportView(jTable1);
@@ -145,6 +157,9 @@ public class PDV extends javax.swing.JInternalFrame {
             jTable1.getColumnModel().getColumn(3).setMinWidth(70);
             jTable1.getColumnModel().getColumn(3).setPreferredWidth(70);
             jTable1.getColumnModel().getColumn(3).setMaxWidth(70);
+            jTable1.getColumnModel().getColumn(4).setMinWidth(80);
+            jTable1.getColumnModel().getColumn(4).setPreferredWidth(80);
+            jTable1.getColumnModel().getColumn(4).setMaxWidth(80);
         }
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -194,14 +209,11 @@ public class PDV extends javax.swing.JInternalFrame {
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(100, 100, 100)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap())
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(24, Short.MAX_VALUE))
         );
 
         jMenu1.setText("Operações");
@@ -230,13 +242,30 @@ public class PDV extends javax.swing.JInternalFrame {
             .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        pack();
+        setBounds(0, 0, 952, 511);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         ConsultarProdutos produtos = new ConsultarProdutos();
         produtos.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+       
+    }//GEN-LAST:event_jTable1MouseClicked
+
+    private void jTable1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTable1KeyPressed
+        if(evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER){
+            DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
+            linha = jTable1.getSelectedRow();
+            
+            int quantidade = Integer.parseInt(jTable1.getValueAt(linha, 2).toString());
+            float precoUnit = Float.parseFloat(jTable1.getValueAt(linha, 3).toString());
+            total = quantidade * precoUnit;  
+            //System.out.println(total);
+            jTable1.setValueAt(total, linha, 4);
+        }
+    }//GEN-LAST:event_jTable1KeyPressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -252,7 +281,7 @@ public class PDV extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    public static javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;

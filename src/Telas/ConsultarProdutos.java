@@ -6,6 +6,7 @@
 
 package Telas;
 
+import Modelo.ModeloPDV;
 import Negocio.Produto;
 import dao.ProdutoDAO;
 import java.util.ArrayList;
@@ -48,6 +49,7 @@ public class ConsultarProdutos extends javax.swing.JFrame {
         jTable1 = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Produtos cadastrados");
         setResizable(false);
 
         jTextField1.addInputMethodListener(new java.awt.event.InputMethodListener() {
@@ -65,10 +67,7 @@ public class ConsultarProdutos extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
+
             },
             new String [] {
                 "Código", "Produto"
@@ -80,6 +79,11 @@ public class ConsultarProdutos extends javax.swing.JFrame {
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
             }
         });
         jScrollPane1.setViewportView(jTable1);
@@ -110,7 +114,8 @@ public class ConsultarProdutos extends javax.swing.JFrame {
                 .addContainerGap(34, Short.MAX_VALUE))
         );
 
-        pack();
+        setSize(new java.awt.Dimension(549, 464));
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jTextField1InputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_jTextField1InputMethodTextChanged
@@ -135,6 +140,24 @@ public class ConsultarProdutos extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_jTextField1KeyReleased
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        if (evt.getClickCount() == 2){
+            DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
+            int linha = jTable1.getSelectedRow();
+            Produto produto = new Produto();
+            produto.setCodProduto((int) jTable1.getValueAt(linha, 0));
+            
+            ModeloPDV modeloPDV = new ModeloPDV();
+            modeloPDV.setProdutoTabela(produto);
+            
+            //PDV pdv = null;
+            //pdv.adicionaProdutoTabela();
+            
+            //System.out.println(produto.getCodProduto());
+            this.dispose();
+        }
+    }//GEN-LAST:event_jTable1MouseClicked
 
     /**
      * @param args the command line arguments
