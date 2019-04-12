@@ -7,6 +7,7 @@
 package Modelo;
 
 import Negocio.Produto;
+import Telas.PDV;
 import static Telas.PDV.jTable1;
 import dao.ProdutoDAO;
 import javax.swing.table.DefaultTableModel;
@@ -34,5 +35,7 @@ public class ModeloPDV {
             0,
             p.getValorVenda()
         });
+        
+        PDV.jMenuItem2.setEnabled(true);
     }
 }
