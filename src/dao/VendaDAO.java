@@ -67,6 +67,7 @@ public class VendaDAO {
                 venda.setCodigo(rs.getInt("codigo"));              
                 //venda.setData(null);
                 venda.setValor(rs.getDouble("valorTotal"));
+                venda.setData(rs.getDate("dataVenda"));
                 vendas.add(venda);
             }
             pst.close();
@@ -91,6 +92,7 @@ public class VendaDAO {
             if(rs.next()){
                 venda.setCodigo(rs.getInt("codigo"));
                 venda.setValor(rs.getDouble("valorTotal"));
+                venda.setData(rs.getDate("dataVenda"));
                 String sqlItem = "SELECT * FROM itemvenda WHERE codigoVenda = ?";
                 
                 PreparedStatement pstItem = conexao.prepareStatement(sqlItem);
@@ -132,5 +134,59 @@ public class VendaDAO {
         } catch (SQLException ex) {
             System.out.println(ex);
         }
+    }
+    
+    public ArrayList<Venda> consultarVendaPorData(java.util.Date data){
+        Connection conexao = new Conexao().getConnection();
+        ProdutoDAO produtoDAO = new ProdutoDAO();
+        ArrayList<Venda> vendas = new ArrayList<>();
+        String sql = "SELECT * FROM vendas WHERE dataVenda = ?";
+        try {
+            PreparedStatement pst = conexao.prepareStatement(sql);
+            pst.setDate(1, new Date(data.getTime()));
+            ResultSet rs = pst.executeQuery();
+            //System.out.println("OK!");
+            while(rs.next()){
+                Venda venda = new Venda();
+                venda.setCodigo(rs.getInt("codigo"));              
+                //venda.setData(null);
+                venda.setValor(rs.getDouble("valorTotal"));
+                venda.setData(rs.getDate("dataVenda"));
+                vendas.add(venda);
+            }
+            pst.close();
+            rs.close();
+            conexao.close();
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+        return vendas;
+    }
+    
+    public ArrayList<Venda> consultarVendaPorPeríodo(java.util.Date dataInicio, java.util.Date dataFim){
+        Connection conexao = new Conexao().getConnection();
+        ProdutoDAO produtoDAO = new ProdutoDAO();
+        ArrayList<Venda> vendas = new ArrayList<>();
+        String sql = "SELECT * FROM vendas WHERE dataVenda BETWEEN '"+new Date(dataInicio.getTime())+"' AND '"+new Date(dataFim.getTime())+"' ";
+        try {
+            PreparedStatement pst = conexao.prepareStatement(sql);
+            
+            ResultSet rs = pst.executeQuery();
+            //System.out.println("OK!");
+            while(rs.next()){
+                Venda venda = new Venda();
+                venda.setCodigo(rs.getInt("codigo"));              
+                //venda.setData(null);
+                venda.setValor(rs.getDouble("valorTotal"));
+                venda.setData(rs.getDate("dataVenda"));
+                vendas.add(venda);
+            }
+            pst.close();
+            rs.close();
+            conexao.close();
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+        return vendas;
     }
 }

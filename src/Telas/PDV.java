@@ -11,7 +11,11 @@ import Negocio.Produto;
 import Negocio.Venda;
 import dao.ProdutoDAO;
 import dao.VendaDAO;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -333,6 +337,7 @@ public class PDV extends javax.swing.JInternalFrame {
             VendaDAO vDAO = new VendaDAO();
             Venda venda = new Venda();
             venda.setData(new Date());
+            
             for (int i = 0; i < jTable1.getRowCount(); i++) {
                 Produto produto = new Produto();
                 ItemVenda item = new ItemVenda();

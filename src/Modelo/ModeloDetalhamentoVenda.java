@@ -9,6 +9,7 @@ package Modelo;
 import Negocio.Venda;
 import Telas.VendaDetalhada;
 import dao.VendaDAO;
+import java.text.SimpleDateFormat;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -26,8 +27,11 @@ public class ModeloDetalhamentoVenda {
         DefaultTableModel dtm = (DefaultTableModel) VendaDetalhada.tblDetVendas.getModel();
         dtm.setNumRows(0);
         
+        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+        
         VendaDetalhada.txtCodigoVenda.setText(String.valueOf(v.getCodigo()));
         VendaDetalhada.txtValorTotal.setText(String.valueOf(v.getValor()));
+        VendaDetalhada.txtDataVenda.setText(df.format(v.getData()));
         
         for(int i=0; i<v.getItens().size(); i++){
             dtm.addRow(new Object[]{

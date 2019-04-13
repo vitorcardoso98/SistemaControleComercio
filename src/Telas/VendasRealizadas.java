@@ -8,7 +8,9 @@ package Telas;
 import Modelo.ModeloDetalhamentoVenda;
 import Negocio.Venda;
 import dao.VendaDAO;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -26,11 +28,13 @@ public class VendasRealizadas extends javax.swing.JFrame {
         DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
         ArrayList<Venda> vendas = vendaDAO.consultarVendasRealiazadas();
 
+        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+
         for (int i = 0; i < vendas.size(); i++) {
 
             dtm.addRow(new Object[]{
                 vendas.get(i).getCodigo(),
-                "",
+                df.format(vendas.get(i).getData()),
                 vendas.get(i).getValor()
             });
         }
@@ -59,6 +63,8 @@ public class VendasRealizadas extends javax.swing.JFrame {
         jFormattedTextField2 = new javax.swing.JFormattedTextField();
         jLabel3 = new javax.swing.JLabel();
         jFormattedTextField3 = new javax.swing.JFormattedTextField();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Vendas");
@@ -122,6 +128,20 @@ public class VendasRealizadas extends javax.swing.JFrame {
         }
         jFormattedTextField3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
+        jButton1.setText("OK");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton2.setText("OK");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -135,7 +155,9 @@ public class VendasRealizadas extends javax.swing.JFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jButton1))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel2)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -143,23 +165,27 @@ public class VendasRealizadas extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jLabel3)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jFormattedTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(jFormattedTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jButton2)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(18, 18, 18)
+                .addGap(17, 17, 17)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(19, 19, 19)
+                    .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1))
+                .addGap(16, 16, 16)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jFormattedTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3)
-                    .addComponent(jFormattedTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jFormattedTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton2))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -184,17 +210,66 @@ public class VendasRealizadas extends javax.swing.JFrame {
         if (evt.getClickCount() == 2) {
             DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
             int linha = jTable1.getSelectedRow();
-            
+
             Venda venda = new Venda();
             venda.setCodigo(Integer.parseInt(jTable1.getValueAt(linha, 0).toString()));
-            
+
             ModeloDetalhamentoVenda modeloDetVenda = new ModeloDetalhamentoVenda();
-            
+
             modeloDetVenda.setTabelaDetalhamentoVendas(venda);
-            
+
             this.dispose();
         }
     }//GEN-LAST:event_jTable1MouseClicked
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        try {
+            DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
+            dtm.setNumRows(0);
+            SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+            Date data = df.parse(jFormattedTextField1.getText());
+            ArrayList<Venda> vendas = vendaDAO.consultarVendaPorData(data);
+
+            for (int i = 0; i < vendas.size(); i++) {
+                
+                dtm.addRow(new Object[]{
+                    vendas.get(i).getCodigo(),
+                    df.format(vendas.get(i).getData()),
+                    vendas.get(i).getValor()
+                });
+                
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        try {
+            DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
+            dtm.setNumRows(0);
+            SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+            //SimpleDateFormat dfExibir = new SimpleDateFormat("dd/MM/yyyy");
+            Date dataInicio = df.parse(jFormattedTextField2.getText());
+            Date dataFim = df.parse(jFormattedTextField3.getText());
+            ArrayList<Venda> vendas = vendaDAO.consultarVendaPorPeríodo(dataInicio, dataFim);
+
+            System.out.println(df.format(dataInicio));
+            System.out.println(df.format(dataFim));
+            for (int i = 0; i < vendas.size(); i++) {
+                
+                dtm.addRow(new Object[]{
+                    vendas.get(i).getCodigo(),
+                    df.format(vendas.get(i).getData()),
+                    vendas.get(i).getValor()
+                });
+                
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -232,6 +307,8 @@ public class VendasRealizadas extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JFormattedTextField jFormattedTextField1;
     private javax.swing.JFormattedTextField jFormattedTextField2;
     private javax.swing.JFormattedTextField jFormattedTextField3;
