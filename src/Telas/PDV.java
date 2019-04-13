@@ -11,11 +11,7 @@ import Negocio.Produto;
 import Negocio.Venda;
 import dao.ProdutoDAO;
 import dao.VendaDAO;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
