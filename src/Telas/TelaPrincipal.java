@@ -182,6 +182,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         CadastrarProduto cadProduto = new CadastrarProduto();
         cadProduto.setVisible(true);
+        
         jDesktopPane1.add(cadProduto);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 

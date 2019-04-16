@@ -17,8 +17,8 @@ public class ProdutoDAO {
 
     public void inserir(Produto produto){
         Connection conexao = new Conexao().getConnection();
-        String sql = "INSERT INTO produtos (nomeProduto, descricao, quantidade, valorCompra, valorVenda, unidadeMedida)"
-                + "VALUES(?,?,?,?,?,?)";
+        String sql = "INSERT INTO produtos (nomeProduto, descricao, quantidade, valorCompra, valorVenda, unidadeMedida, codigoBarras)"
+                + "VALUES(?,?,?,?,?,?,?)";
         try {
             PreparedStatement pst = conexao.prepareStatement(sql);
             pst.setString(1, produto.getNomeProduto());
@@ -27,6 +27,7 @@ public class ProdutoDAO {
             pst.setDouble(4, produto.getValorCompra());
             pst.setDouble(5, produto.getValorVenda());
             pst.setString(6, produto.getUnidadeMedida());
+            pst.setString(7, produto.getCodigoBarras());
 
             pst.execute();
             pst.close();
@@ -85,6 +86,34 @@ public class ProdutoDAO {
                 produto.setValorCompra(rs.getDouble("valorCompra"));
                 produto.setValorVenda(rs.getDouble("valorVenda"));
                 produto.setUnidadeMedida(rs.getString("unidadeMedida"));
+            }
+            pst.close();
+            rs.close();
+            conexao.close();
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+        return produto;
+    }
+    
+    public Produto recuperarPorCodigoBarras(String codigo) {
+        Connection conexao = new Conexao().getConnection();
+        String sql = "SELECT * FROM produtos WHERE codigoBarras = ?";
+        Produto produto = new Produto();
+        try {
+            PreparedStatement pst = conexao.prepareStatement(sql);
+            pst.setString(1, codigo);
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next()) {
+                produto.setCodProduto(rs.getInt("codProduto"));
+                produto.setNomeProduto(rs.getString("nomeProduto"));
+                produto.setDescricacao(rs.getString("descricao"));
+                produto.setQuantidade(rs.getInt("quantidade"));
+                produto.setValorCompra(rs.getDouble("valorCompra"));
+                produto.setValorVenda(rs.getDouble("valorVenda"));
+                produto.setUnidadeMedida(rs.getString("unidadeMedida"));
+                produto.setCodigoBarras(rs.getString("codigoBarras"));
             }
             pst.close();
             rs.close();

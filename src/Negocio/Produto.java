@@ -7,6 +7,7 @@ package Negocio;
 public class Produto {
 
     private int codProduto;
+    private String codigoBarras;
     private String nomeProduto;
     private String descricao;
     private int quantidade;
@@ -110,6 +111,20 @@ public class Produto {
      */
     public void setUnidadeMedida(String unidadeMedida) {
         this.unidadeMedida = unidadeMedida;
+    }
+
+    /**
+     * @return the codigoBarras
+     */
+    public String getCodigoBarras() {
+        return codigoBarras;
+    }
+
+    /**
+     * @param codigoBarras the codigoBarras to set
+     */
+    public void setCodigoBarras(String codigoBarras) {
+        this.codigoBarras = codigoBarras;
     }
     
 }

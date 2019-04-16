@@ -38,4 +38,23 @@ public class ModeloPDV {
         
         PDV.jMenuItem2.setEnabled(true);
     }
+    
+    public void setProdutoTabelaPorCodigoBarras(Produto produto){
+        ProdutoDAO produtoDAO = new ProdutoDAO();
+        //System.out.println(produto.getCodProduto());
+        p = produtoDAO.recuperarPorCodigoBarras(produto.getCodigoBarras());
+        
+        DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
+        int linha = jTable1.getSelectedRow();
+        
+        //System.out.println(produto.getNomeProduto());
+        dtm.addRow(new Object[]{
+            p.getCodProduto(),
+            p.getNomeProduto(),
+            0,
+            p.getValorVenda()
+        });
+        
+        PDV.jMenuItem2.setEnabled(true);
+    }
 }

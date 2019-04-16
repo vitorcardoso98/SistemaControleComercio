@@ -276,8 +276,8 @@ public class Estoque extends javax.swing.JInternalFrame {
         produto.setCodProduto(Integer.parseInt(txtCodProduto.getText()));
         produto.setNomeProduto(txtNomeProduto.getText());
         produto.setDescricacao(txtDescricao.getText());
-        produto.setValorCompra(Double.parseDouble(txtValorCompra.getText()));
-        produto.setValorVenda(Double.parseDouble(txtValorVenda.getText()));
+        produto.setValorCompra(Double.parseDouble(txtValorCompra.getText().replace(",", ".")));
+        produto.setValorVenda(Double.parseDouble(txtValorVenda.getText().replace(",", ".")));
         produto.setQuantidade((int) cxQuantidade.getValue());
         produto.setUnidadeMedida(txtUnidadeMedida.getText());
         produtoDAO.editar(produto);

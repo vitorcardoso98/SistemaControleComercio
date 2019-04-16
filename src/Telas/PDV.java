@@ -57,7 +57,7 @@ public class PDV extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
+        txtCodigoBarras = new javax.swing.JTextField();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -194,10 +194,15 @@ public class PDV extends javax.swing.JInternalFrame {
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel2.setText("Código do produto:");
 
-        jTextField3.setBackground(new java.awt.Color(0, 0, 0));
-        jTextField3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jTextField3.setForeground(new java.awt.Color(255, 255, 255));
-        jTextField3.setCaretColor(new java.awt.Color(255, 255, 255));
+        txtCodigoBarras.setBackground(new java.awt.Color(0, 0, 0));
+        txtCodigoBarras.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        txtCodigoBarras.setForeground(new java.awt.Color(255, 255, 255));
+        txtCodigoBarras.setCaretColor(new java.awt.Color(255, 255, 255));
+        txtCodigoBarras.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtCodigoBarrasKeyPressed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -210,7 +215,7 @@ public class PDV extends javax.swing.JInternalFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jTextField3))
+                    .addComponent(txtCodigoBarras))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -221,7 +226,7 @@ public class PDV extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtCodigoBarras, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -333,7 +338,7 @@ public class PDV extends javax.swing.JInternalFrame {
             VendaDAO vDAO = new VendaDAO();
             Venda venda = new Venda();
             venda.setData(new Date());
-            
+
             for (int i = 0; i < jTable1.getRowCount(); i++) {
                 Produto produto = new Produto();
                 ItemVenda item = new ItemVenda();
@@ -348,9 +353,8 @@ public class PDV extends javax.swing.JInternalFrame {
             soma = 0;
             jTextField2.setText(String.valueOf(soma));
             jTextField1.setText("0.0");
-            
+
             //System.out.println("Ok!");
-            
             DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
             dtm.setNumRows(0);
             jMenuItem2.setEnabled(false);
@@ -363,10 +367,29 @@ public class PDV extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jTextField2ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        double valorPago = Double.parseDouble(JOptionPane.showInputDialog("Informe o valor pago pelo cliente", 
+        double valorPago = Double.parseDouble(JOptionPane.showInputDialog("Informe o valor pago pelo cliente",
                 "Digite a quantia dada pelo cliente"));
-        jTextField1.setText(String.valueOf(valorPago-soma));
+        jTextField1.setText(String.valueOf(valorPago - soma));
     }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void txtCodigoBarrasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoBarrasKeyPressed
+        if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER) {
+            Produto prod;
+            prod = produtoDAO.recuperarPorCodigoBarras(txtCodigoBarras.getText());
+            if (txtCodigoBarras.getText().equals(prod.getCodigoBarras())) {
+                Produto produto = new Produto();
+                produto.setCodigoBarras(txtCodigoBarras.getText());
+                modeloPDV = new ModeloPDV();
+                modeloPDV.setProdutoTabelaPorCodigoBarras(produto);
+                txtCodigoBarras.setText("");
+            } else {
+                JOptionPane.showMessageDialog(null, "Este produto não está cadastrado ou não possui código de barras!");
+                txtCodigoBarras.setText("");
+
+            }
+
+        }
+    }//GEN-LAST:event_txtCodigoBarrasKeyPressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -389,6 +412,6 @@ public class PDV extends javax.swing.JInternalFrame {
     public static javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
+    private javax.swing.JTextField txtCodigoBarras;
     // End of variables declaration//GEN-END:variables
 }
