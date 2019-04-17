@@ -74,9 +74,10 @@ public class Venda {
         return itens;
     }
     
-    public void faturamentoDiario(java.util.Date data){
+    public ArrayList<Double> faturamentoDiario(java.util.Date data){
         VendaDAO vendaDAO = new VendaDAO();
         ArrayList<Venda> vendas = vendaDAO.consultarVendaPorData(data);
+        ArrayList<Double> valores = new ArrayList<>();
         double valorProdutos = 0;
         double vt = 0;
         for(int i=0; i<vendas.size(); i++){
@@ -90,9 +91,11 @@ public class Venda {
             }
             
         }
-        System.out.println("Valor total vendido: "+vt);
-        System.out.println("Valor total pago pela aquisição dos produtos: "+valorProdutos);
+        valores.add(vt);
+        valores.add(valorProdutos);
         double lucro = vt-valorProdutos;
-        System.out.println("Lucro: "+lucro);
+        valores.add(lucro);
+        
+        return valores;
     }
 }

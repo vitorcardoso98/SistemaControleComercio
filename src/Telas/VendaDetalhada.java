@@ -215,6 +215,7 @@ public class VendaDetalhada extends javax.swing.JInternalFrame {
             vendaDAO.excluir(venda);
             txtCodigoVenda.setText("");
             txtValorTotal.setText("");
+            txtDataVenda.setText("");
             DefaultTableModel dtm = (DefaultTableModel) VendaDetalhada.tblDetVendas.getModel();
             dtm.setNumRows(0);
         }

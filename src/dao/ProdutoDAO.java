@@ -155,7 +155,7 @@ public class ProdutoDAO {
             pst.setDouble(5, produto.getValorVenda());
             pst.setString(6, produto.getUnidadeMedida());
             pst.setInt(7, produto.getCodProduto());
-            pst.executeLargeUpdate();
+            pst.executeUpdate();
 
             pst.close();
             conexao.close();

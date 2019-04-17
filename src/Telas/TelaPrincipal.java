@@ -44,6 +44,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jMenuItem4 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Sistema para controle comercial");
 
         jToolBar2.setFloatable(false);
         jToolBar2.setRollover(true);
@@ -151,6 +152,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         });
         jMenu2.add(jMenuItem3);
 
+        jMenuItem4.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, 0));
         jMenuItem4.setText("Faturamento");
         jMenu2.add(jMenuItem4);
 

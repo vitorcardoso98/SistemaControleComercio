@@ -5,6 +5,7 @@
  */
 package Telas;
 
+import Modelo.ModeloEstoque;
 import Modelo.ModeloPDV;
 import Negocio.ItemVenda;
 import Negocio.Produto;
@@ -26,8 +27,8 @@ public class PDV extends javax.swing.JInternalFrame {
      */
     ProdutoDAO produtoDAO = new ProdutoDAO();
     ModeloPDV modeloPDV = new ModeloPDV();
+    ModeloEstoque modeloEstoque = new ModeloEstoque();
     float total;
-    float soma = 0;
     int linha;
 
     public PDV() {
@@ -43,16 +44,21 @@ public class PDV extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPopupMenu1 = new javax.swing.JPopupMenu();
+        jMenuItem6 = new javax.swing.JMenuItem();
         jPanel3 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        txtValorTotal = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        txtQuantidade = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
@@ -64,6 +70,14 @@ public class PDV extends javax.swing.JInternalFrame {
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
 
+        jMenuItem6.setText("Remover");
+        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem6ActionPerformed(evt);
+            }
+        });
+        jPopupMenu1.add(jMenuItem6);
+
         setClosable(true);
         setIconifiable(true);
         setTitle("PDV");
@@ -73,17 +87,12 @@ public class PDV extends javax.swing.JInternalFrame {
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel1.setText("Valor Total:");
 
-        jTextField2.setEditable(false);
-        jTextField2.setBackground(new java.awt.Color(0, 0, 0));
-        jTextField2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jTextField2.setForeground(new java.awt.Color(255, 255, 255));
-        jTextField2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField2.setText("0.0");
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
-            }
-        });
+        txtValorTotal.setEditable(false);
+        txtValorTotal.setBackground(new java.awt.Color(0, 0, 0));
+        txtValorTotal.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        txtValorTotal.setForeground(new java.awt.Color(255, 255, 255));
+        txtValorTotal.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtValorTotal.setText("0.0");
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel4.setText("Operações");
@@ -107,6 +116,17 @@ public class PDV extends javax.swing.JInternalFrame {
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel7.setText("Calcular troco - F7");
 
+        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel8.setText("Quantidade");
+
+        txtQuantidade.setBackground(new java.awt.Color(0, 0, 0));
+        txtQuantidade.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        txtQuantidade.setForeground(new java.awt.Color(255, 255, 255));
+        txtQuantidade.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
+        jLabel9.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel9.setText("Quantidade do produto - F9");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -114,8 +134,9 @@ public class PDV extends javax.swing.JInternalFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField2)
+                    .addComponent(txtValorTotal)
                     .addComponent(jTextField1)
+                    .addComponent(txtQuantidade)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
@@ -123,8 +144,10 @@ public class PDV extends javax.swing.JInternalFrame {
                             .addComponent(jLabel5)
                             .addComponent(jLabel6)
                             .addComponent(jLabel3)
-                            .addComponent(jLabel7))
-                        .addGap(0, 119, Short.MAX_VALUE)))
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel8)
+                            .addComponent(jLabel9))
+                        .addGap(0, 102, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -133,12 +156,16 @@ public class PDV extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtValorTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel8)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtQuantidade)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel4)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel5)
@@ -146,7 +173,9 @@ public class PDV extends javax.swing.JInternalFrame {
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel7)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel9)
+                .addGap(48, 48, 48))
         );
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -158,7 +187,7 @@ public class PDV extends javax.swing.JInternalFrame {
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, true, false, false
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -168,11 +197,6 @@ public class PDV extends javax.swing.JInternalFrame {
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTable1MouseClicked(evt);
-            }
-        });
-        jTable1.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                jTable1KeyPressed(evt);
             }
         });
         jScrollPane1.setViewportView(jTable1);
@@ -239,7 +263,7 @@ public class PDV extends javax.swing.JInternalFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(27, 27, 27))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -248,15 +272,10 @@ public class PDV extends javax.swing.JInternalFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(24, Short.MAX_VALUE))
+                .addContainerGap(28, Short.MAX_VALUE))
         );
 
         jMenu1.setText("Operações");
-        jMenu1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenu1ActionPerformed(evt);
-            }
-        });
 
         jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F11, 0));
         jMenuItem1.setText("Pesquisar produtos");
@@ -310,27 +329,10 @@ public class PDV extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
-
-    }//GEN-LAST:event_jTable1MouseClicked
-
-    private void jTable1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTable1KeyPressed
-        if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER) {
-            DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
-            linha = jTable1.getSelectedRow();
-
-            int quantidade = Integer.parseInt(jTable1.getValueAt(linha, 2).toString());
-            float precoUnit = Float.parseFloat(jTable1.getValueAt(linha, 3).toString());
-            total = quantidade * precoUnit;
-            //System.out.println(total);
-            jTable1.setValueAt(total, linha, 4);
-            soma = soma + (float) jTable1.getValueAt(linha, 4);
-            jTextField2.setText(String.valueOf(soma));
+        if (evt.isMetaDown()) {
+            jPopupMenu1.show(jTable1, evt.getX(), evt.getY());
         }
-    }//GEN-LAST:event_jTable1KeyPressed
-
-    private void jMenu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu1ActionPerformed
-
-    }//GEN-LAST:event_jMenu1ActionPerformed
+    }//GEN-LAST:event_jTable1MouseClicked
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         int opcao = JOptionPane.showConfirmDialog(this, "Deseja realmente finalizar a venda?");
@@ -348,28 +350,40 @@ public class PDV extends javax.swing.JInternalFrame {
                 item.setQuantidade(Integer.parseInt(jTable1.getValueAt(i, 2).toString()));
                 venda.addItem(item);
             }
+            if (Double.parseDouble(txtValorTotal.getText()) == 0) {
+                JOptionPane.showMessageDialog(null, "Insira a quantidade dos produtos");
+            } else {
+                for (int j = 0; j < venda.getItens().size(); j++) {
+                    Produto p = produtoDAO.recuperarPorCodigo(
+                            venda.getItens().get(j).getProduto().getCodProduto());
+                    if (venda.getItens().get(j).getQuantidade() > p.getQuantidade()) {
+                        JOptionPane.showMessageDialog(rootPane, "A quantidade do produto "
+                                + p.getNomeProduto()
+                                + " no estoque é menor que a quantidade a ser vendida");
+                    } else {
+                        vDAO.salvar(venda);
+                        Produto prod = new Produto();
+                        for (int i = 0; i < venda.getItens().size(); i++) {
+  
+                            prod = produtoDAO.recuperarPorCodigo(venda.getItens().get(i).getProduto().getCodProduto());
+                            modeloEstoque.realizarBaixaNoEstoque(prod, venda.getItens().get(i).getQuantidade());
+                        }
+                        txtValorTotal.setText("0.0");
+                        jTextField1.setText("0.0");
 
-            vDAO.salvar(venda);
-            soma = 0;
-            jTextField2.setText(String.valueOf(soma));
-            jTextField1.setText("0.0");
-
-            //System.out.println("Ok!");
-            DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
-            dtm.setNumRows(0);
-            jMenuItem2.setEnabled(false);
+                        DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
+                        dtm.setNumRows(0);
+                        jMenuItem2.setEnabled(false);
+                    }
+                }
+            }
         }
-
     }//GEN-LAST:event_jMenuItem2ActionPerformed
-
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         double valorPago = Double.parseDouble(JOptionPane.showInputDialog("Informe o valor pago pelo cliente",
                 "Digite a quantia dada pelo cliente"));
-        jTextField1.setText(String.valueOf(valorPago - soma));
+        jTextField1.setText(String.valueOf(valorPago - Double.parseDouble(txtValorTotal.getText())));
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void txtCodigoBarrasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoBarrasKeyPressed
@@ -380,16 +394,24 @@ public class PDV extends javax.swing.JInternalFrame {
                 Produto produto = new Produto();
                 produto.setCodigoBarras(txtCodigoBarras.getText());
                 modeloPDV = new ModeloPDV();
+                int quantidadeProduto = Integer.parseInt(JOptionPane.showInputDialog("Digite a quantidade para o produto",
+                        ""));
+                modeloPDV.setQuantidade(quantidadeProduto);
                 modeloPDV.setProdutoTabelaPorCodigoBarras(produto);
                 txtCodigoBarras.setText("");
             } else {
                 JOptionPane.showMessageDialog(null, "Este produto não está cadastrado ou não possui código de barras!");
                 txtCodigoBarras.setText("");
-
             }
 
         }
     }//GEN-LAST:event_txtCodigoBarrasKeyPressed
+
+    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
+        DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
+        dtm.removeRow(jTable1.getSelectedRow());
+        modeloPDV.atualizarValorTotal();
+    }//GEN-LAST:event_jMenuItem6ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -400,18 +422,23 @@ public class PDV extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     public static javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JScrollPane jScrollPane1;
     public static javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField txtCodigoBarras;
+    private javax.swing.JTextField txtQuantidade;
+    public static javax.swing.JTextField txtValorTotal;
     // End of variables declaration//GEN-END:variables
 }

@@ -10,6 +10,7 @@ import Modelo.ModeloPDV;
 import Negocio.Produto;
 import dao.ProdutoDAO;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -148,7 +149,11 @@ public class ConsultarProdutos extends javax.swing.JFrame {
             Produto produto = new Produto();
             produto.setCodProduto((int) jTable1.getValueAt(linha, 0));
             
+            int quantidadeProduto = Integer.parseInt(JOptionPane.showInputDialog("Digite a quantidade para o produto",
+                ""));
+            
             ModeloPDV modeloPDV = new ModeloPDV();
+            modeloPDV.setQuantidade(quantidadeProduto);
             modeloPDV.setProdutoTabela(produto);
             
             //PDV pdv = null;
