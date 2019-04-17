@@ -124,7 +124,7 @@ public class ProdutoDAO {
         return produto;
     }
 
-    public void excluir(int codigo) {
+    public boolean excluir(int codigo) {
         Connection conexao = new Conexao().getConnection();
         String sql = "DELETE FROM produtos WHERE codProduto = ?";
 
@@ -132,10 +132,13 @@ public class ProdutoDAO {
             PreparedStatement pst = conexao.prepareStatement(sql);
             pst.setInt(1, codigo);
             pst.execute();
+            
             pst.close();
             conexao.close();
+            return true;
         } catch (SQLException ex) {
             System.out.println(ex);
+            return false;
         }
     }
 

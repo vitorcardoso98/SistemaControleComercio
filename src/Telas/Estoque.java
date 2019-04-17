@@ -34,8 +34,8 @@ public class Estoque extends javax.swing.JInternalFrame {
         btExcluir.setEnabled(true);
         btCancelar.setEnabled(true);
     }
-    
-    public void desabilitarComponentes(){
+
+    public void desabilitarComponentes() {
         txtNomeProduto.setEditable(false);
         txtDescricao.setEditable(false);
         txtValorCompra.setEditable(false);
@@ -117,6 +117,12 @@ public class Estoque extends javax.swing.JInternalFrame {
 
         jLabel1.setText("Pesquisar produtos:");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 20, -1, -1));
+
+        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextField1KeyReleased(evt);
+            }
+        });
         getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 20, 352, -1));
 
         jLabel2.setText("Código:");
@@ -167,10 +173,7 @@ public class Estoque extends javax.swing.JInternalFrame {
 
         tblProdutos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
             },
             new String [] {
                 "Código", "Produto", "Preço de Compra", "Preço de venda", "Qtde."
@@ -265,10 +268,15 @@ public class Estoque extends javax.swing.JInternalFrame {
     private void btExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btExcluirActionPerformed
         int opcao = JOptionPane.showConfirmDialog(this, "Deseja realmente excluir o produto " + txtNomeProduto.getText() + "?");
         if (opcao == 0) {
-            produtoDAO.excluir(Integer.parseInt(txtCodProduto.getText()));
+            boolean op = produtoDAO.excluir(Integer.parseInt(txtCodProduto.getText()));
+            if (op == true) {
+                desabilitarComponentes();
+                popularTabela();
+            }else{
+                JOptionPane.showMessageDialog(null, "O produto não pode ser excluído pois faz parte de uma venda");
+            }
         }
-        desabilitarComponentes();
-        popularTabela();
+
     }//GEN-LAST:event_btExcluirActionPerformed
 
     private void btSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSalvarActionPerformed
@@ -281,10 +289,28 @@ public class Estoque extends javax.swing.JInternalFrame {
         produto.setQuantidade((int) cxQuantidade.getValue());
         produto.setUnidadeMedida(txtUnidadeMedida.getText());
         produtoDAO.editar(produto);
-        
+
         desabilitarComponentes();
         popularTabela();
     }//GEN-LAST:event_btSalvarActionPerformed
+
+    private void jTextField1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyReleased
+        if (jTextField1.getText().equals("")) {
+            popularTabela();
+        } else {
+            DefaultTableModel dtm = (DefaultTableModel) tblProdutos.getModel();
+            dtm.setNumRows(0);
+            ArrayList<Produto> produtos = produtoDAO.pesquisaInteligenteProduto(jTextField1.getText());
+
+            for (int i = 0; i < produtos.size(); i++) {
+                dtm.addRow(new Object[]{
+                    produtos.get(i).getCodProduto(),
+                    produtos.get(i).getNomeProduto()
+
+                });
+            }
+        }
+    }//GEN-LAST:event_jTextField1KeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

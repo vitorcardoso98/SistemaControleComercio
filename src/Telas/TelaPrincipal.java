@@ -88,6 +88,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jButton3.setMinimumSize(new java.awt.Dimension(80, 90));
         jButton3.setPreferredSize(new java.awt.Dimension(80, 90));
         jButton3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
         jToolBar2.add(jButton3);
 
         jDesktopPane1.setBackground(new java.awt.Color(153, 255, 153));
@@ -209,6 +214,12 @@ public class TelaPrincipal extends javax.swing.JFrame {
         vendas.setVisible(true);
         jDesktopPane1.add(vendas);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        Faturamento faturamento = new Faturamento();
+        faturamento.setVisible(true);
+        jDesktopPane1.add(faturamento);
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments

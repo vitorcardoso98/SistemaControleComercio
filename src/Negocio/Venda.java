@@ -6,6 +6,7 @@
 
 package Negocio;
 
+import dao.VendaDAO;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -71,5 +72,27 @@ public class Venda {
     
     public List<ItemVenda> getItens() {
         return itens;
+    }
+    
+    public void faturamentoDiario(java.util.Date data){
+        VendaDAO vendaDAO = new VendaDAO();
+        ArrayList<Venda> vendas = vendaDAO.consultarVendaPorData(data);
+        double valorProdutos = 0;
+        double vt = 0;
+        for(int i=0; i<vendas.size(); i++){
+            vt = vt + vendas.get(i).getValor();
+            System.out.println(vt);
+            Venda v = vendaDAO.recuperarVendaPorCodigo(vendas.get(i).getCodigo());
+            
+            for(int j=0; j<v.getItens().size(); j++){
+                
+                valorProdutos = valorProdutos + (v.getItens().get(j).getProduto().getValorCompra()*v.getItens().get(j).getQuantidade());
+            }
+            
+        }
+        System.out.println("Valor total vendido: "+vt);
+        System.out.println("Valor total pago pela aquisição dos produtos: "+valorProdutos);
+        double lucro = vt-valorProdutos;
+        System.out.println("Lucro: "+lucro);
     }
 }
