@@ -19,6 +19,7 @@ public class ModeloEstoque {
         ProdutoDAO produtoDAO = new ProdutoDAO();
         int novaQuantidade = produto.getQuantidade() - quantidade;
         produto.setQuantidade(novaQuantidade);
+        
         produtoDAO.editar(produto);
     }
     

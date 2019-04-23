@@ -22,7 +22,9 @@ import java.util.ArrayList;
  * @author JOÃO VITOR
  */
 public class VendaDAO {
-
+    
+    ProdutoDAO produtoDAO = new ProdutoDAO();
+    
     public void salvar(Venda venda){
         Connection conexao = new Conexao().getConnection();
         String sql = "INSERT INTO vendas (dataVenda, valorTotal) VALUES(?,?)";
@@ -39,13 +41,18 @@ public class VendaDAO {
             int idVenda = rs.getInt(1);
             
             for(ItemVenda iv: venda.getItens()){
+                Produto produto = new Produto();
                 sql = "INSERT INTO itemvenda (codigoProduto, codigoVenda, quantidade, valorUnitario) VALUES (?,?,?,?)";
                 PreparedStatement ps = conexao.prepareStatement(sql);
                 ps.setInt(1, iv.getProduto().getCodProduto());
+                produto.setCodProduto(iv.getProduto().getCodProduto());
+                
                 ps.setInt(2, idVenda);
                 ps.setInt(3, iv.getQuantidade());
+                int quantidade = iv.getQuantidade();
                 ps.setDouble(4, iv.getProduto().getValorVenda());
                 ps.execute();
+                produtoDAO.baixaNoEstoque(produto, quantidade);
             }
             
         } catch (SQLException ex) {

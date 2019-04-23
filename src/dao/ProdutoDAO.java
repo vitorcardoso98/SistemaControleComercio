@@ -188,4 +188,18 @@ public class ProdutoDAO {
         }
         return produtos;
     }
+    
+    public void baixaNoEstoque(Produto produto, int quantidade){
+        Connection conexao = new Conexao().getConnection();
+        String sql = "UPDATE produtos SET quantidade = quantidade - ? WHERE codProduto=?";
+        
+        try {
+            PreparedStatement pst = conexao.prepareStatement(sql);
+            pst.setInt(1, quantidade);
+            pst.setInt(2, produto.getCodProduto());
+            pst.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
 }

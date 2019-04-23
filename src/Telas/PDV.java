@@ -30,6 +30,7 @@ public class PDV extends javax.swing.JInternalFrame {
     ModeloEstoque modeloEstoque = new ModeloEstoque();
     float total;
     int linha;
+    boolean op = true;
 
     public PDV() {
         initComponents();
@@ -348,34 +349,27 @@ public class PDV extends javax.swing.JInternalFrame {
                 produto.setValorVenda(Double.parseDouble(jTable1.getValueAt(i, 3).toString()));
                 item.setProduto(produto);
                 item.setQuantidade(Integer.parseInt(jTable1.getValueAt(i, 2).toString()));
-                venda.addItem(item);
-            }
-            if (Double.parseDouble(txtValorTotal.getText()) == 0) {
-                JOptionPane.showMessageDialog(null, "Insira a quantidade dos produtos");
-            } else {
-                for (int j = 0; j < venda.getItens().size(); j++) {
-                    Produto p = produtoDAO.recuperarPorCodigo(
-                            venda.getItens().get(j).getProduto().getCodProduto());
-                    if (venda.getItens().get(j).getQuantidade() > p.getQuantidade()) {
-                        JOptionPane.showMessageDialog(rootPane, "A quantidade do produto "
-                                + p.getNomeProduto()
-                                + " no estoque é menor que a quantidade a ser vendida");
-                    } else {
-                        vDAO.salvar(venda);
-                        Produto prod = new Produto();
-                        for (int i = 0; i < venda.getItens().size(); i++) {
-  
-                            prod = produtoDAO.recuperarPorCodigo(venda.getItens().get(i).getProduto().getCodProduto());
-                            modeloEstoque.realizarBaixaNoEstoque(prod, venda.getItens().get(i).getQuantidade());
-                        }
-                        txtValorTotal.setText("0.0");
-                        jTextField1.setText("0.0");
-
-                        DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
-                        dtm.setNumRows(0);
-                        jMenuItem2.setEnabled(false);
-                    }
+                Produto prod = produtoDAO.recuperarPorCodigo(Integer.parseInt(jTable1.getValueAt(i, 0).toString()));
+                if (Integer.parseInt(jTable1.getValueAt(i, 2).toString()) > prod.getQuantidade()) {
+                    JOptionPane.showMessageDialog(rootPane, "A quantidade do produto "
+                            + prod.getNomeProduto()
+                            + " no estoque é menor que a quantidade a ser vendida");
+                    op = false;
+                } else {
+                    venda.addItem(item);
+                    op = true;
                 }
+
+            }
+            if (op == true) {
+                vDAO.salvar(venda);
+                //Zerando valores
+                txtValorTotal.setText("0.0");
+                jTextField1.setText("0.0");
+
+                DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
+                dtm.setNumRows(0);
+                jMenuItem2.setEnabled(false);
             }
         }
     }//GEN-LAST:event_jMenuItem2ActionPerformed
