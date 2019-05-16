@@ -28,10 +28,10 @@ public class PDV extends javax.swing.JInternalFrame {
     ProdutoDAO produtoDAO = new ProdutoDAO();
     ModeloPDV modeloPDV = new ModeloPDV();
     ModeloEstoque modeloEstoque = new ModeloEstoque();
-    float total;
-    int linha;
+    //float total;
+    //int linha;
     boolean op = true;
-
+    
     public PDV() {
         initComponents();
     }
@@ -341,7 +341,7 @@ public class PDV extends javax.swing.JInternalFrame {
             VendaDAO vDAO = new VendaDAO();
             Venda venda = new Venda();
             venda.setData(new Date());
-
+            
             for (int i = 0; i < jTable1.getRowCount(); i++) {
                 Produto produto = new Produto();
                 ItemVenda item = new ItemVenda();
@@ -350,23 +350,16 @@ public class PDV extends javax.swing.JInternalFrame {
                 item.setProduto(produto);
                 item.setQuantidade(Integer.parseInt(jTable1.getValueAt(i, 2).toString()));
                 Produto prod = produtoDAO.recuperarPorCodigo(Integer.parseInt(jTable1.getValueAt(i, 0).toString()));
-                if (Integer.parseInt(jTable1.getValueAt(i, 2).toString()) > prod.getQuantidade()) {
-                    JOptionPane.showMessageDialog(rootPane, "A quantidade do produto "
-                            + prod.getNomeProduto()
-                            + " no estoque é menor que a quantidade a ser vendida");
-                    op = false;
-                } else {
-                    venda.addItem(item);
-                    op = true;
-                }
-
+                
+                venda.addItem(item);
+                
             }
-            if (op == true) {
+            if (modeloEstoque.validarProdutosEstoque(venda)) {
                 vDAO.salvar(venda);
                 //Zerando valores
                 txtValorTotal.setText("0.0");
                 jTextField1.setText("0.0");
-
+                
                 DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
                 dtm.setNumRows(0);
                 jMenuItem2.setEnabled(false);
@@ -387,17 +380,19 @@ public class PDV extends javax.swing.JInternalFrame {
             if (txtCodigoBarras.getText().equals(prod.getCodigoBarras())) {
                 Produto produto = new Produto();
                 produto.setCodigoBarras(txtCodigoBarras.getText());
+                produto.setCodProduto(prod.getCodProduto());
                 modeloPDV = new ModeloPDV();
                 int quantidadeProduto = Integer.parseInt(JOptionPane.showInputDialog("Digite a quantidade para o produto",
                         ""));
                 modeloPDV.setQuantidade(quantidadeProduto);
                 modeloPDV.setProdutoTabelaPorCodigoBarras(produto);
+                //System.out.println("Teste");
                 txtCodigoBarras.setText("");
             } else {
                 JOptionPane.showMessageDialog(null, "Este produto não está cadastrado ou não possui código de barras!");
                 txtCodigoBarras.setText("");
             }
-
+            
         }
     }//GEN-LAST:event_txtCodigoBarrasKeyPressed
 
@@ -431,7 +426,7 @@ public class PDV extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane1;
     public static javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField txtCodigoBarras;
+    public static javax.swing.JTextField txtCodigoBarras;
     private javax.swing.JTextField txtQuantidade;
     public static javax.swing.JTextField txtValorTotal;
     // End of variables declaration//GEN-END:variables

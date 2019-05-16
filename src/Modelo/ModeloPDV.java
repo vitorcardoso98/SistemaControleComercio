@@ -9,6 +9,7 @@ import Negocio.Produto;
 import Telas.PDV;
 import static Telas.PDV.jTable1;
 import dao.ProdutoDAO;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -34,40 +35,78 @@ public class ModeloPDV {
         p = produtoDAO.recuperarPorCodigo(produto.getCodProduto());
 
         DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
-        int linha = jTable1.getSelectedRow();
+        //int linha = jTable1.getSelectedRow();
 
-        //System.out.println(produto.getNomeProduto());
-        dtm.addRow(new Object[]{
-            p.getCodProduto(),
-            p.getNomeProduto(),
-            quantidade,
-            p.getValorVenda(),
-            p.getValorVenda() * quantidade
-        });
+        if (jTable1.getRowCount() == 0) {
+            dtm.addRow(new Object[]{
+                p.getCodProduto(),
+                p.getNomeProduto(),
+                quantidade,
+                p.getValorVenda(),
+                p.getValorVenda() * quantidade
+            });
 
-        PDV.jMenuItem2.setEnabled(true);
-        atualizarValorTotal();
+            PDV.jMenuItem2.setEnabled(true);
+            atualizarValorTotal();
+        } else {
+            for (int i = 0; i < jTable1.getRowCount(); i++) {
+                if (Integer.parseInt(jTable1.getValueAt(i, 0).toString()) == produto.getCodProduto()) {
+                    JOptionPane.showMessageDialog(null, "O produto já está adiconado à compra");
+                } else {
+                    dtm.addRow(new Object[]{
+                        p.getCodProduto(),
+                        p.getNomeProduto(),
+                        quantidade,
+                        p.getValorVenda(),
+                        p.getValorVenda() * quantidade
+                    });
+
+                    PDV.jMenuItem2.setEnabled(true);
+                    atualizarValorTotal();
+                }
+            }
+        }
     }
 
     public void setProdutoTabelaPorCodigoBarras(Produto produto) {
         ProdutoDAO produtoDAO = new ProdutoDAO();
-        //System.out.println(produto.getCodProduto());
+        
         p = produtoDAO.recuperarPorCodigoBarras(produto.getCodigoBarras());
 
         DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
-        int linha = jTable1.getSelectedRow();
 
-        //System.out.println(produto.getNomeProduto());
-        dtm.addRow(new Object[]{
-            p.getCodProduto(),
-            p.getNomeProduto(),
-            quantidade,
-            p.getValorVenda(),
-            p.getValorVenda() * quantidade
-        });
+        if (jTable1.getRowCount() == 0) {
+            dtm.addRow(new Object[]{
+                p.getCodProduto(),
+                p.getNomeProduto(),
+                quantidade,
+                p.getValorVenda(),
+                p.getValorVenda() * quantidade
+            });
 
-        PDV.jMenuItem2.setEnabled(true);
-        atualizarValorTotal();
+            PDV.jMenuItem2.setEnabled(true);
+            atualizarValorTotal();
+        } else {
+            for (int i = 0; i < jTable1.getRowCount(); i++) {
+                if (Integer.parseInt(jTable1.getValueAt(i, 0).toString()) == produto.getCodProduto()) {
+                    System.out.println(jTable1.getValueAt(i, 0).toString());
+                    System.out.println(produto.getCodProduto());
+                    JOptionPane.showMessageDialog(null, "O produto já está adiconado à compra");
+                    PDV.txtCodigoBarras.setText("");
+                } else {
+                    dtm.addRow(new Object[]{
+                        p.getCodProduto(),
+                        p.getNomeProduto(),
+                        quantidade,
+                        p.getValorVenda(),
+                        p.getValorVenda() * quantidade
+                    });
+
+                    PDV.jMenuItem2.setEnabled(true);
+                    atualizarValorTotal();
+                }
+            }
+        }
     }
 
     /**
