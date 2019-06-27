@@ -12,6 +12,7 @@ import Negocio.Produto;
 import Negocio.Venda;
 import dao.ProdutoDAO;
 import dao.VendaDAO;
+import java.awt.Dimension;
 import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -31,6 +32,11 @@ public class PDV extends javax.swing.JInternalFrame {
     //float total;
     //int linha;
     boolean op = true;
+    
+    public void setPosicao() {
+        Dimension d = this.getDesktopPane().getSize();
+        this.setLocation((d.width - this.getSize().width) / 2, (d.height - this.getSize().height) / 2);
+    }
     
     public PDV() {
         initComponents();

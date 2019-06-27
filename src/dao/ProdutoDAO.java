@@ -1,13 +1,12 @@
 package dao;
 
 import Negocio.Produto;
- 
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
 
 /**
  *
@@ -15,10 +14,10 @@ import java.util.ArrayList;
  */
 public class ProdutoDAO {
 
-    public void inserir(Produto produto){
+    public void inserir(Produto produto) {
         Connection conexao = new Conexao().getConnection();
-        String sql = "INSERT INTO produtos (nomeProduto, descricao, quantidade, valorCompra, valorVenda, unidadeMedida, codigoBarras)"
-                + "VALUES(?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO produtos (nomeProduto, descricao, quantidade, valorCompra, valorVenda, unidadeMedida, codigoBarras, estoqueMinimo)"
+                + "VALUES(?,?,?,?,?,?,?,?)";
         try {
             PreparedStatement pst = conexao.prepareStatement(sql);
             pst.setString(1, produto.getNomeProduto());
@@ -28,6 +27,7 @@ public class ProdutoDAO {
             pst.setDouble(5, produto.getValorVenda());
             pst.setString(6, produto.getUnidadeMedida());
             pst.setString(7, produto.getCodigoBarras());
+            pst.setInt(8, produto.getEstoqueMinimo());
 
             pst.execute();
             pst.close();
@@ -56,6 +56,7 @@ public class ProdutoDAO {
                 produto.setValorCompra(rs.getDouble("valorCompra"));
                 produto.setValorVenda(rs.getDouble("valorVenda"));
                 produto.setUnidadeMedida(rs.getString("unidadeMedida"));
+                produto.setEstoqueMinimo(rs.getInt("estoqueMinimo"));
                 produtos.add(produto);
             }
             pst.close();
@@ -86,6 +87,7 @@ public class ProdutoDAO {
                 produto.setValorCompra(rs.getDouble("valorCompra"));
                 produto.setValorVenda(rs.getDouble("valorVenda"));
                 produto.setUnidadeMedida(rs.getString("unidadeMedida"));
+                produto.setEstoqueMinimo(rs.getInt("estoqueMinimo"));
             }
             pst.close();
             rs.close();
@@ -95,7 +97,7 @@ public class ProdutoDAO {
         }
         return produto;
     }
-    
+
     public Produto recuperarPorCodigoBarras(String codigo) {
         Connection conexao = new Conexao().getConnection();
         String sql = "SELECT * FROM produtos WHERE codigoBarras = ?";
@@ -114,6 +116,7 @@ public class ProdutoDAO {
                 produto.setValorVenda(rs.getDouble("valorVenda"));
                 produto.setUnidadeMedida(rs.getString("unidadeMedida"));
                 produto.setCodigoBarras(rs.getString("codigoBarras"));
+                produto.setEstoqueMinimo(rs.getInt("estoqueMinimo"));
             }
             pst.close();
             rs.close();
@@ -132,7 +135,7 @@ public class ProdutoDAO {
             PreparedStatement pst = conexao.prepareStatement(sql);
             pst.setInt(1, codigo);
             pst.execute();
-            
+
             pst.close();
             conexao.close();
             return true;
@@ -145,7 +148,7 @@ public class ProdutoDAO {
     public void editar(Produto produto) {
         Connection conexao = new Conexao().getConnection();
         String sql = "UPDATE produtos SET nomeProduto=?, descricao=?, quantidade=?, valorCompra=?,"
-                + " valorVenda=?, unidadeMedida=? WHERE codProduto=?";
+                + " valorVenda=?, unidadeMedida=?, estoqueMinimo=? WHERE codProduto=?";
         try {
             PreparedStatement pst = conexao.prepareStatement(sql);
             pst.setString(1, produto.getNomeProduto());
@@ -154,7 +157,9 @@ public class ProdutoDAO {
             pst.setDouble(4, produto.getValorCompra());
             pst.setDouble(5, produto.getValorVenda());
             pst.setString(6, produto.getUnidadeMedida());
-            pst.setInt(7, produto.getCodProduto());
+            pst.setInt(7, produto.getEstoqueMinimo());
+            pst.setInt(8, produto.getCodProduto());
+
             pst.executeUpdate();
 
             pst.close();
@@ -164,12 +169,12 @@ public class ProdutoDAO {
         }
 
     }
-    
-    public ArrayList<Produto> pesquisaInteligenteProduto(String texto){
+
+    public ArrayList<Produto> pesquisaInteligenteProduto(String texto) {
         Connection conexao = new Conexao().getConnection();
         String sql = "SELECT * FROM produtos WHERE nomeProduto LIKE ?";
         ArrayList<Produto> produtos = new ArrayList<>();
-        
+
         ResultSet rs = null;
         try {
             PreparedStatement pst = conexao.prepareStatement(sql);
@@ -179,20 +184,20 @@ public class ProdutoDAO {
                 Produto produto = new Produto();
                 produto.setCodProduto(rs.getInt("codProduto"));
                 produto.setNomeProduto(rs.getString("nomeProduto"));
-                
+
                 produtos.add(produto);
             }
-            
+
         } catch (SQLException ex) {
             System.out.println(ex);
         }
         return produtos;
     }
-    
-    public void baixaNoEstoque(Produto produto, int quantidade){
+
+    public void baixaNoEstoque(Produto produto, int quantidade) {
         Connection conexao = new Conexao().getConnection();
         String sql = "UPDATE produtos SET quantidade = quantidade - ? WHERE codProduto=?";
-        
+
         try {
             PreparedStatement pst = conexao.prepareStatement(sql);
             pst.setInt(1, quantidade);

@@ -24,6 +24,7 @@ public class ConsultarProdutos extends javax.swing.JFrame {
      */
     ProdutoDAO produtoDAO = new ProdutoDAO();
     
+    
     public void carregarTabela() {
         DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
         dtm.setNumRows(0);

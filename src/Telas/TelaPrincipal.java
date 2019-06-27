@@ -154,6 +154,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         jMenuItem4.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, 0));
         jMenuItem4.setText("Faturamento");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
         jMenu2.add(jMenuItem4);
 
         jMenuBar1.add(jMenu2);
@@ -184,44 +189,57 @@ public class TelaPrincipal extends javax.swing.JFrame {
         PDV telaPDV = new PDV();
         telaPDV.setVisible(true);
         jDesktopPane1.add(telaPDV);
+        telaPDV.setPosicao();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         CadastrarProduto cadProduto = new CadastrarProduto();
         cadProduto.setVisible(true);
-        
         jDesktopPane1.add(cadProduto);
+        cadProduto.setPosicao();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         CadastrarProduto cadProduto = new CadastrarProduto();
         cadProduto.setVisible(true);
         jDesktopPane1.add(cadProduto);
+        cadProduto.setPosicao();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
         Estoque estoque = new Estoque();
         estoque.setVisible(true);
         jDesktopPane1.add(estoque);
+        estoque.setPosicao();
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         PDV pdv = new PDV();
         pdv.setVisible(true);
         jDesktopPane1.add(pdv);
+        pdv.setPosicao();
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         VendaDetalhada vendas = new VendaDetalhada();
         vendas.setVisible(true);
         jDesktopPane1.add(vendas);
+        vendas.setPosicao();
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         Faturamento faturamento = new Faturamento();
         faturamento.setVisible(true);
         jDesktopPane1.add(faturamento);
+        faturamento.setPosicao();
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        Faturamento faturamento = new Faturamento();
+        faturamento.setVisible(true);
+        jDesktopPane1.add(faturamento);
+        faturamento.setPosicao();
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     /**
      * @param args the command line arguments

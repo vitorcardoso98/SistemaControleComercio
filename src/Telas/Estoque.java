@@ -7,6 +7,7 @@ package Telas;
 
 import Negocio.Produto;
 import dao.ProdutoDAO;
+import java.awt.Dimension;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -21,6 +22,11 @@ public class Estoque extends javax.swing.JInternalFrame {
      * Creates new form Estoque
      */
     ProdutoDAO produtoDAO = new ProdutoDAO();
+    
+    public void setPosicao() {
+        Dimension d = this.getDesktopPane().getSize();
+        this.setLocation((d.width - this.getSize().width) / 2, (d.height - this.getSize().height) / 2);
+    }
 
     public void habilitarComponentes() {
         txtNomeProduto.setEditable(true);
@@ -28,6 +34,7 @@ public class Estoque extends javax.swing.JInternalFrame {
         txtValorCompra.setEditable(true);
         txtValorVenda.setEditable(true);
         cxQuantidade.setEnabled(true);
+        cxEstoqueMinimo.setEnabled(true);
         txtUnidadeMedida.setEditable(true);
 
         btSalvar.setEnabled(true);
@@ -41,6 +48,7 @@ public class Estoque extends javax.swing.JInternalFrame {
         txtValorCompra.setEditable(false);
         txtValorVenda.setEditable(false);
         cxQuantidade.setEnabled(false);
+        cxEstoqueMinimo.setEnabled(false);
         txtUnidadeMedida.setEditable(false);
 
         btSalvar.setEnabled(false);
@@ -54,6 +62,7 @@ public class Estoque extends javax.swing.JInternalFrame {
         txtValorVenda.setText("");
         txtUnidadeMedida.setText("");
         cxQuantidade.setValue(0);
+        cxEstoqueMinimo.setValue(0);
     }
 
     public void popularTabela() {
@@ -109,67 +118,51 @@ public class Estoque extends javax.swing.JInternalFrame {
         btSalvar = new javax.swing.JButton();
         btExcluir = new javax.swing.JButton();
         btCancelar = new javax.swing.JButton();
+        jLabel9 = new javax.swing.JLabel();
+        cxEstoqueMinimo = new javax.swing.JSpinner();
 
         setClosable(true);
         setIconifiable(true);
         setTitle("Produtos no estoque");
-        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setText("Pesquisar produtos:");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 20, -1, -1));
 
         jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 jTextField1KeyReleased(evt);
             }
         });
-        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 20, 352, -1));
 
         jLabel2.setText("Código:");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 50, -1, -1));
 
         txtCodProduto.setEditable(false);
-        getContentPane().add(txtCodProduto, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 50, 60, -1));
 
         jLabel3.setText("Nome:");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 50, -1, -1));
 
         txtNomeProduto.setEditable(false);
-        getContentPane().add(txtNomeProduto, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 50, 300, -1));
 
         jLabel4.setText("Descrição:");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 90, -1, -1));
 
         txtDescricao.setEditable(false);
         txtDescricao.setColumns(20);
         txtDescricao.setRows(5);
         jScrollPane1.setViewportView(txtDescricao);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 90, 260, -1));
-
         jLabel5.setText("Preço de compra:");
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 90, -1, -1));
 
         txtValorCompra.setEditable(false);
-        getContentPane().add(txtValorCompra, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 110, 120, -1));
 
         jLabel6.setText("Preço de venda:");
-        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 150, -1, -1));
 
         txtValorVenda.setEditable(false);
-        getContentPane().add(txtValorVenda, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 170, 120, -1));
 
         jLabel7.setText("Quantidade:");
-        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 210, -1, -1));
 
         cxQuantidade.setEnabled(false);
-        getContentPane().add(cxQuantidade, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 210, 60, -1));
 
         jLabel8.setText("Unidade de medida:");
-        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 210, -1, -1));
 
         txtUnidadeMedida.setEditable(false);
-        getContentPane().add(txtUnidadeMedida, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 210, 90, -1));
 
         tblProdutos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -208,8 +201,6 @@ public class Estoque extends javax.swing.JInternalFrame {
             tblProdutos.getColumnModel().getColumn(4).setMaxWidth(60);
         }
 
-        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 290, 600, 230));
-
         btSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icones/salvar.png"))); // NOI18N
         btSalvar.setText("Salvar");
         btSalvar.setEnabled(false);
@@ -218,7 +209,6 @@ public class Estoque extends javax.swing.JInternalFrame {
                 btSalvarActionPerformed(evt);
             }
         });
-        getContentPane().add(btSalvar, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 240, -1, -1));
 
         btExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icones/excluir.png"))); // NOI18N
         btExcluir.setText("Excluir");
@@ -228,7 +218,6 @@ public class Estoque extends javax.swing.JInternalFrame {
                 btExcluirActionPerformed(evt);
             }
         });
-        getContentPane().add(btExcluir, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 240, -1, -1));
 
         btCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icones/cancelar.png"))); // NOI18N
         btCancelar.setText("Cancelar");
@@ -238,7 +227,117 @@ public class Estoque extends javax.swing.JInternalFrame {
                 btCancelarActionPerformed(evt);
             }
         });
-        getContentPane().add(btCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 240, -1, -1));
+
+        jLabel9.setText("Estoque mínimo:");
+
+        cxEstoqueMinimo.setEnabled(false);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(70, 70, 70)
+                        .addComponent(jLabel9)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(cxEstoqueMinimo, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btCancelar)
+                        .addGap(17, 17, 17)
+                        .addComponent(btSalvar)
+                        .addGap(19, 19, 19)
+                        .addComponent(btExcluir))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(70, 70, 70)
+                                .addComponent(jLabel1)
+                                .addGap(14, 14, 14)
+                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 352, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(70, 70, 70)
+                                .addComponent(jLabel2)
+                                .addGap(13, 13, 13)
+                                .addComponent(txtCodProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(10, 10, 10)
+                                .addComponent(jLabel3)
+                                .addGap(9, 9, 9)
+                                .addComponent(txtNomeProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(70, 70, 70)
+                                .addComponent(jLabel4)
+                                .addGap(10, 10, 10)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(20, 20, 20)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel5)
+                                    .addComponent(txtValorCompra, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel6)
+                                    .addComponent(txtValorVenda, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(70, 70, 70)
+                                .addComponent(jLabel7)
+                                .addGap(10, 10, 10)
+                                .addComponent(cxQuantidade, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(20, 20, 20)
+                                .addComponent(jLabel8)
+                                .addGap(5, 5, 5)
+                                .addComponent(txtUnidadeMedida, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addGap(4, 4, 4))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 14, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(10, 10, 10)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2)
+                    .addComponent(txtCodProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3)
+                    .addComponent(txtNomeProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(20, 20, 20)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addGap(6, 6, 6)
+                        .addComponent(txtValorCompra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(20, 20, 20)
+                        .addComponent(jLabel6)
+                        .addGap(6, 6, 6)
+                        .addComponent(txtValorVenda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(20, 20, 20)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel7)
+                    .addComponent(cxQuantidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8)
+                    .addComponent(txtUnidadeMedida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(27, 27, 27)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel9)
+                            .addComponent(cxEstoqueMinimo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btCancelar)
+                            .addComponent(btSalvar)
+                            .addComponent(btExcluir))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
+                .addContainerGap())
+        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -254,6 +353,7 @@ public class Estoque extends javax.swing.JInternalFrame {
             txtValorCompra.setText(String.valueOf(produto.getValorCompra()));
             txtValorVenda.setText(String.valueOf(produto.getValorVenda()));
             cxQuantidade.setValue(produto.getQuantidade());
+            cxEstoqueMinimo.setValue(produto.getEstoqueMinimo());
             txtUnidadeMedida.setText(produto.getUnidadeMedida());
 
             //habilitando componentes
@@ -287,6 +387,7 @@ public class Estoque extends javax.swing.JInternalFrame {
         produto.setValorCompra(Double.parseDouble(txtValorCompra.getText().replace(",", ".")));
         produto.setValorVenda(Double.parseDouble(txtValorVenda.getText().replace(",", ".")));
         produto.setQuantidade((int) cxQuantidade.getValue());
+        produto.setEstoqueMinimo((int) cxEstoqueMinimo.getValue());
         produto.setUnidadeMedida(txtUnidadeMedida.getText());
         produtoDAO.editar(produto);
 
@@ -317,6 +418,7 @@ public class Estoque extends javax.swing.JInternalFrame {
     private javax.swing.JButton btCancelar;
     private javax.swing.JButton btExcluir;
     private javax.swing.JButton btSalvar;
+    private javax.swing.JSpinner cxEstoqueMinimo;
     private javax.swing.JSpinner cxQuantidade;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -326,6 +428,7 @@ public class Estoque extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField jTextField1;

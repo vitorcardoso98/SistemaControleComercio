@@ -14,6 +14,7 @@ public class Produto {
     private double valorCompra;
     private double valorVenda;
     private String unidadeMedida;
+    private int estoqueMinimo;
 
     /**
      * @return the codProduto
@@ -125,6 +126,20 @@ public class Produto {
      */
     public void setCodigoBarras(String codigoBarras) {
         this.codigoBarras = codigoBarras;
+    }
+
+    /**
+     * @return the estoqueMinimo
+     */
+    public int getEstoqueMinimo() {
+        return estoqueMinimo;
+    }
+
+    /**
+     * @param estoqueMinimo the estoqueMinimo to set
+     */
+    public void setEstoqueMinimo(int estoqueMinimo) {
+        this.estoqueMinimo = estoqueMinimo;
     }
     
 }

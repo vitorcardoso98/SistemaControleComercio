@@ -6,6 +6,7 @@
 package Telas;
 
 import Negocio.Venda;
+import java.awt.Dimension;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -19,6 +20,11 @@ public class Faturamento extends javax.swing.JInternalFrame {
     /**
      * Creates new form Faturamento
      */
+    public void setPosicao() {
+        Dimension d = this.getDesktopPane().getSize();
+        this.setLocation((d.width - this.getSize().width) / 2, (d.height - this.getSize().height) / 2);
+    }
+    
     public Faturamento() {
         initComponents();
     }

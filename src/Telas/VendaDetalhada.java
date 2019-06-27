@@ -2,6 +2,7 @@ package Telas;
 
 import Negocio.Venda;
 import dao.VendaDAO;
+import java.awt.Dimension;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -16,6 +17,11 @@ public class VendaDetalhada extends javax.swing.JInternalFrame {
      * Creates new form VendaDetalhada
      */
     VendaDAO vendaDAO = new VendaDAO();
+    
+    public void setPosicao() {
+        Dimension d = this.getDesktopPane().getSize();
+        this.setLocation((d.width - this.getSize().width) / 2, (d.height - this.getSize().height) / 2);
+    }
 
     public void listarVendas() {
         DefaultTableModel dtm = (DefaultTableModel) tblDetVendas.getModel();
